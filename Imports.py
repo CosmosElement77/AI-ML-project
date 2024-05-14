@@ -8,6 +8,8 @@ import ast as ast
 import nltk as nltk
 from nltk.stem.porter import PorterStemmer
 #Natural Language Toolkit
+from tkinter import *
+import tkinter
 
 #Append only the genre_names from the genre object in the dataFrame
 def convert(obj):
@@ -27,6 +29,13 @@ def convert_cast(obj):
         else:
             break
     return lis
+
+def find_director(obj):
+    director=[]
+    for i in ast.literal_eval(obj):
+        if i['job']=="Director":
+            director.append(i['name'])
+    return director
 
 def join_b(x):
     return ' '.join(x)
