@@ -15,6 +15,7 @@ movies_df.dropna(inplace=True)
 
 #Using the user defined convert and convert_cast function in the Imports file
 movies_df['genres'] = movies_df['genres'].apply(convert)
+# movies_df['title']=movies_df['title'].apply(makelower)
 movies_df['keywords'] = movies_df['keywords'].apply(convert)
 movies_df['cast'] = movies_df['cast'].apply(convert_cast)
 movies_df['crew'] = movies_df['crew'].apply(find_director)
@@ -51,19 +52,33 @@ new_df['tags']=new_df['tags'].apply(stem)
 Similar_Choices=cosine_similarity(vector_similarity)
 
 def recommend(movie_name ):
-    movie_index=new_df[new_df['title']==movie_name].index[0] 
-    distances= Similar_Choices[movie_index]
-    movies_list =sorted(list(enumerate (distances)), reverse=True, key=lambda x:x[1]) [1:6]
+    try:
+        movie_index=new_df[new_df['title']==movie_name].index[0] 
+        movie_index=new_df[new_df['title']==movie_name].index[0] 
+        distances= Similar_Choices[movie_index]
+        movies_list =sorted(list(enumerate (distances)), reverse=True, key=lambda x:x[1]) [1:6]
 
-    print("\n")
-    print(f"The Top 5 Recommended Movies for {movie_name} fans are: \n")
-    for i in movies_list:
-        print(new_df.iloc[i[0]].title + " ("+new_df.iloc[i[0]].tagline +")"+ "\n" + new_df.iloc[i[0]].release_date +"\n"+new_df.iloc[i[0]].genres +"\n"+str(new_df.iloc[i[0]].vote_average)+"⭐") 
-        print("\t")
-        print("-------------------------------------------------------------------------------------------")
+        print("\n")
+        print(f"The Top 5 Recommended Movies for {movie_name} fans are: \n")
+        for i in movies_list:
+            print(new_df.iloc[i[0]].title + " ("+new_df.iloc[i[0]].tagline +")"+ "\n" + new_df.iloc[i[0]].release_date +"\n"+new_df.iloc[i[0]].genres +"\n"+str(new_df.iloc[i[0]].vote_average)+"⭐") 
+            print("\t")
+            print("-------------------------------------------------------------------------------------------")
+    except:
+        print("\n")
+        print("----------------")
+        print("|"+"Movie Not Found"+"|")
+        print("----------------")
+        print("\n")
 
-movie=input("Print the movie name you want recommendations for --> ")
-
-recommend(movie)
+movie=input("Print the movie name you want recommendations for or type STOP--> ")
+while(True):
+    if movie!="STOP":
+        recommend(movie)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        movie=input("Print the movie name you want recommendations for or type STOP--> ")
+    else:
+        break
+# recommend(movie)
 
 
